@@ -492,7 +492,7 @@ function renderCitizenEntryPage() {
   <!-- Header with MEP Logo -->
   <header class="header">
     <div class="logo-container">
-      <img src="https://www.mep.gov.sa/themes/mep/assets/img/logo-mep.svg" alt="Ministry of Economy and Planning Logo">
+      <img src="/logo-mep.jpg" alt="Ministry of Economy and Planning Logo">
     </div>
     <button class="lang-toggle" onclick="toggleLanguage()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -640,6 +640,7 @@ function renderCitizenEntryPage() {
       const lang = isArabic ? 'ar' : 'en';
       return translations[lang][key] || key;
     }
+
     const form = document.getElementById("loginForm");
     const submitBtn = document.getElementById("submitBtn");
     const statusCard = document.getElementById("statusCard");
