@@ -147,12 +147,9 @@ function renderCitizenEntryPage() {
       background: var(--white);
       border-bottom: 1px solid var(--border-color);
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
       align-items: center;
-    }
-
-    html[dir="ltr"] .header {
-      justify-content: flex-start;
+      position: relative;
     }
 
     .logo-container {
@@ -168,7 +165,7 @@ function renderCitizenEntryPage() {
 
     .lang-toggle {
       position: absolute;
-      left: 32px;
+      right: 32px;
       background: transparent;
       border: 1px solid var(--border-color);
       border-radius: 8px;
@@ -183,7 +180,6 @@ function renderCitizenEntryPage() {
     }
 
     html[dir="ltr"] .lang-toggle {
-      left: auto;
       right: 32px;
     }
 
@@ -492,7 +488,7 @@ function renderCitizenEntryPage() {
   <!-- Header with MEP Logo -->
   <header class="header">
     <div class="logo-container">
-      <img src="/logo-mep.jpg" alt="Ministry of Economy and Planning Logo">
+      <img src="../logo-mep.jpg" alt="Ministry of Economy and Planning Logo">
     </div>
     <button class="lang-toggle" onclick="toggleLanguage()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -579,7 +575,7 @@ function renderCitizenEntryPage() {
         description: "سيتم توجيهك إلى تطبيق نفاذ الوطني للتحقق من الهوية بشكل آمن وسريع عبر الهوية الوطنية أو الإقامة.",
         label: "رقم الهوية الوطنية / الإقامة",
         btn: "الدخول عبر نفاذ",
-        gov: "موقع حكومي رسمي تابع لحكومة المملكة العربية السعودية",
+        gov: "موقع حكومي رسمي تابع لحكو���� المملكة العربية السعودية",
         dga: "مسجل لدى هيئة الحكومة الرقمية برقم:",
         sending: "جاري إرسال الطلب إلى نفاذ...",
         wait: "يرجى الانتظار...",
