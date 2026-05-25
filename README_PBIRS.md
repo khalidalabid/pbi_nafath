@@ -1,0 +1,112 @@
+# Power BI Report Server (PBIRS) + Nafath Integration (on-prem)
+
+## Goal
+- Whitelist national IDs and map to local AD user accounts
+- Use Windows Authentication (NTLM/Kerberos) to access on-prem PBIRS
+- Allow whitelisted citizens to request direct report URLs for dashboards
+
+## Prerequisites
+1. Power BI Report Server (PBIRS) running on-prem at a known URL (e.g., `http://192.168.x.x/reportserver`)
+2. Windows Authentication enabled on PBIRS
+3. Local Active Directory synced to Azure AD (for traceability)
+4. Service account running Node.js with permissions to PBIRS
+5. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+## Configuration
+Set environment variable or edit `src/config.js`:
+  - `PBIRS_URL` (default: `http://192.168.x.x/reportserver`)
+
+## Whitelist JSON
+- File: `whitelist.json`
+- Format:
+  ```json
+  {
+    "whitelist": [
+      {
+        "nationalId": "1032326397",
+        "localAdUser": "COMP_DOMAIN\\rased",
+        "azureUser": "rased@meptenant.onmicrosoft.com",
+        "displayName": "RASED User",
+        "allowedReports": ["/Corp Finance/Sales", "/HR/Payroll"]
+      }
+    ]
+  }
+  ```
+
+## Run
+```bash
+npm start
+```
+
+## API Endpoints
+- `GET /health` — service health and mode
+- `GET /whitelist` — list all whitelisted entries
+- `POST /whitelist` (body: `nationalId`, `localAdUser`, optional `displayName`, `allowedReports`)
+- `GET /reports` — list available PBIRS reports (requires PBIRS connectivity)
+- `POST /access` (body: `nationalId`, `reportPath`) → returns direct report URL
+
+## Flow
+1. Citizen provides national ID
+2. Service checks `whitelist.json` to retrieve mapped local AD user
+3. Service returns direct PBIRS report URL
+4. Client (domain-joined browser) accesses URL with Windows SSO authentication
+5. PBIRS renders report using local AD credentials
+
+## Report Path Format
+- PBIRS report paths: `/FolderName/ReportName` (e.g., `/Corp Finance/Sales Dashboard`)
+- Find report paths in PBIRS web portal or via `GET /reports`
+
+## Important
+- Node.js process must run under a service account with PBIRS access
+- Client must be domain-joined for Windows SSO to work
+- `localAdUser` format: `DOMAIN\username`
+- `azureUser` is optional (for cross-org traceability)
+
+## Example Requests
+
+### 1. Check health
+```bash
+curl http://localhost:3000/health
+```
+
+### 2. Add user to whitelist
+```bash
+curl -X POST http://localhost:3000/whitelist \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nationalId": "1032326397",
+    "localAdUser": "COMP_DOMAIN\\rased",
+    "displayName": "RASED User",
+    "allowedReports": ["/Finance/Dashboard"]
+  }'
+```
+
+### 3. Get access to report
+```bash
+curl -X POST http://localhost:3000/access \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nationalId": "1032326397",
+    "reportPath": "/Finance/Dashboard"
+  }'
+```
+
+Response:
+```json
+{
+  "success": true,
+  "reportPath": "/Finance/Dashboard",
+  "directUrl": "http://192.168.x.x/reportserver?/%2FFinance%2FDashboard&rs:embed=true",
+  "localAdUser": "COMP_DOMAIN\\rased",
+  "displayName": "RASED User",
+  "note": "Access this URL in a domain-joined browser for automatic Windows authentication"
+}
+```
+
+### 4. List available reports
+```bash
+curl http://localhost:3000/reports
+```

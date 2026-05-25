@@ -1,0 +1,36 @@
+{
+  "whitelist": [
+    {
+      "nationalId": "1032326397",
+      "displayName": "خالد العابد",
+      "localAdUser": "COMP_DOMAIN\\Rased.Nafath",
+      "allowedReports": [
+        "/powerbi/RASED?rs:Embed=true"
+      ]
+    },
+    {
+      "nationalId": "1027529369",
+      "displayName": "تنافسية - نفاذ",
+      "localAdUser": "COMP_DOMAIN\\CompetitiveNafath",
+      "allowedReports": [
+        "/powerbi/DMSD/Regional%20Competitive%20Advantages%20Study%20for%20KSA"
+      ]
+    },
+    {
+      "nationalId": "1072676867",
+      "displayName": "راصد - نفاذ",
+      "localAdUser": "COMP_DOMAIN\\Rased.Nafath",
+      "allowedReports": [
+        "/powerbi/RASED?rs:Embed=true"
+      ]
+    },
+    {
+      "nationalId": "1082100346",
+      "displayName": "عبدالعزيز السهلي",
+      "localAdUser": "COMP_DOMAIN\\Rased.Nafath",
+      "allowedReports": [
+        "/powerbi/RASED?rs:Embed=true"
+      ]
+    }
+  ]
+}
