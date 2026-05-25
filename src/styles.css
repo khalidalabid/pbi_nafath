@@ -1,0 +1,66 @@
+ :root {
+ --bg: #f4efe4;
+ --panel: #fffaf0;
+ --ink: #1f2a1f;
+ --muted: #55614d;
+ --accent: #1f6b52;
+ --accent-2: #d6a74f;
+ --danger: #9e2a2b;
+ --border: rgba(31, 42, 31, 0.12);
+ --shadow: 0 24px 60px rgba(54, 58, 43, 0.16);
+ }
+
+ /* --- DGA STAMP CSS --- */
+ .digital-stamp-card { padding: 8px 32px; background: #F3F4F6; width: 100%; position: absolute; top: 0; left: 0; z-index: 1000; box-sizing: border-box; }
+ .digital-stamp-card .digital-stamp-header { display: flex; align-items: center; gap: 10px; }
+ .digital-stamp-card .digital-stamp-header h6 { margin: 0px; color: #161616; font-size: 14px; }
+ .digital-stamp-card .digital-stamp-header .btn-digital-stamp-card { cursor: pointer; }
+ .digital-stamp-card .digital-stamp-header .btn-digital-stamp-card span { color: #1B8354; font-size: 14px; }
+ .digital-stamp-card .digital-stamp-header .btn-digital-stamp-card svg { transition: 0.3s; }
+ .digital-stamp-card .digital-stamp-header.open .btn-digital-stamp-card svg { transform: rotate(180deg); }
+ .digital-stamp-card .digital-stamp-body { padding-top: 40px; padding-bottom: 32px; display: none; }
+ .digital-stamp-card .digital-stamp-body .digital-stamp-container { margin-bottom: 32px; display: flex; gap: 32px; }
+ .digital-stamp-card .digital-stamp-body .digital-stamp-container .box { display: flex; align-items: flex-start; gap: 18px; }
+ .digital-stamp-card .digital-stamp-body .digital-stamp-container .box .img-border-rounded { padding: 14px 16px; display: flex; align-items: center; justify-content: center; border: 1px solid #067647; border-radius: 100%; }
+ .digital-stamp-card .digital-stamp-body .digital-stamp-container .box h6 { margin-top: 0px; margin-bottom: 12px; color: #161616; font-size: 18px; }
+ .digital-stamp-card .digital-stamp-body .digital-stamp-container .box .green-text { color: #1B8354; }
+ .digital-stamp-card .digital-stamp-body .digital-stamp-container .box p { margin: 0px; color: #384250; font-size: 16px; }
+ .digital-stamp-card .digital-stamp-body .stamp-link-box { padding: 8px 28px; display: flex; align-items: center; gap: 12px; border-radius: 8px; background: #FFF; }
+ .digital-stamp-card .digital-stamp-body .stamp-link-box p { margin: 0px; color: #161616; font-size: 16px; }
+ .digital-stamp-card .digital-stamp-body .stamp-link-box a { color: #1B8354; font-size: 16px; text-decoration: underline; }
+ .stamp-ar { direction: rtl; }
+ @media (max-width: 768px) { 
+    .digital-stamp-card .digital-stamp-body .digital-stamp-container { flex-direction: column; } 
+    body { padding-top: 100px; }
+ }
+
+ /* --- ORIGINAL APP CSS --- */
+ * { box-sizing: border-box; }
+ body {
+ margin: 0;
+ min-height: 100vh;
+ font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+ background: radial-gradient(circle at top left, rgba(214, 167, 79, 0.24), transparent 28%), linear-gradient(135deg, #ebe2cf 0%, var(--bg) 42%, #dbe7de 100%);
+ color: var(--ink);
+ display: grid;
+ place-items: center;
+ padding: 24px;
+ padding-top: 80px; /* Space for the stamp */
+ }
+ .shell { width: min(720px, 100%); background: rgba(255, 250, 240, 0.94); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); overflow: hidden; }
+ .hero { padding: 32px 32px 20px; background: linear-gradient(145deg, rgba(31, 107, 82, 0.92), rgba(37, 73, 56, 0.92)); color: #f7f3eb; }
+ .hero h1 { margin: 0 0 12px; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: 0.02em; }
+ .hero p { margin: 0; max-width: 54ch; color: rgba(247, 243, 235, 0.86); line-height: 1.6; }
+ .body { padding: 28px 32px 32px; }
+ form { display: grid; gap: 16px; }
+ label { font-size: 0.95rem; color: var(--muted); }
+ input { width: 100%; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(31, 42, 31, 0.18); font-size: 1.1rem; background: rgba(255, 255, 255, 0.8); }
+ button { appearance: none; border: 0; border-radius: 14px; padding: 16px 18px; background: linear-gradient(135deg, var(--accent), #255d48); color: white; font-size: 1rem; font-weight: 700; cursor: pointer; }
+ button[disabled] { opacity: 0.6; cursor: wait; }
+ .status { margin-top: 20px; padding: 18px; border-radius: 16px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.66); display: none; }
+ .status.visible { display: block; animation: fadeIn 220ms ease; }
+ .random-box { display: inline-grid; place-items: center; min-width: 110px; margin: 12px 0; padding: 16px 20px; border-radius: 18px; background: linear-gradient(135deg, rgba(214, 167, 79, 0.2), rgba(31, 107, 82, 0.12)); color: var(--accent); font-size: 2.1rem; font-weight: 800; letter-spacing: 0.08em; }
+ .hint { margin: 0; color: var(--muted); line-height: 1.6; }
+ .error { color: var(--danger); font-weight: 700; }
+ .success { color: var(--accent); font-weight: 700; }
+ @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
